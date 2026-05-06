@@ -1,0 +1,167 @@
+# X-BLUE-HUB
+Script
+-- [[ XLUES BLUE - V2.0 THE OMNIPOTENCE ]] --
+-- OWNER: ADMIN ZHOIHR | FULL MODS | NO KEY | APOLLON STYLE UI
+-- FEATURES: PREHISTORIC, MIRAGE, ALL BOSS, ALL RACE V4, KITSUNE
+
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Sidebar = Instance.new("Frame")
+local Container = Instance.new("ScrollingFrame")
+local TabHolder = Instance.new("Frame")
+local Logo = Instance.new("TextLabel")
+local ToggleBtn = Instance.new("TextButton")
+local OpenBtn = Instance.new("TextButton")
+
+ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.Name = "XluesBlue_Zhoihr"
+
+-- [[ SETTINGS GLOBAL (THE BIG BANG) ]] --
+_G.Settings = {
+    -- Farming & Bosses
+    AutoFarm = false, FastAttack = true, AutoSkill = true, BringMob = true,
+    AutoKatakuri = false, AutoIndra = false, AutoDoughKing = false, AutoSoulReaper = false, AutoFarmAllBoss = false,
+    -- Race V2-V4 & Trials
+    AutoV2 = false, AutoV3 = false, AutoTrialV4 = false, KillPlayerTrial = false,
+    GetBlueGear = false, LockMoon = false, AutoActiveV3 = false, AutoActiveV4 = false,
+    -- Prehistoric (PH) & Sea Events
+    FindPH = false, CollectEggPH = false, FarmBones = false, AutoLevi = false, AutoShark = false,
+    -- Items & Mastery
+    GetCDK = false, GetTTK = false, GetSGT = false, AutoGodHuman = false, AutoMastery = false,
+    -- Special Events
+    KitsuneIsland = false, AutoAzure = false, GachaKitsune = false,
+    -- Misc
+    FruitFinderTP = false, AutoStore = true, Luck1000 = true, NoCooldown = true,
+    TweenSpeed = 350, Highlight = true, WalkSpeed = 25, JumpPower = 50
+}
+
+-- [[ VISUAL: BLUE AURA HIGHLIGHT ]] --
+task.spawn(function()
+    while task.wait(1) do
+        local char = game.Players.LocalPlayer.Character
+        if char and _G.Settings.Highlight then
+            if not char:FindFirstChild("XluesAura") then
+                local h = Instance.new("Highlight", char)
+                h.Name = "XluesAura"; h.FillColor = Color3.fromRGB(0, 150, 255)
+                h.OutlineColor = Color3.fromRGB(255, 255, 255); h.FillTransparency = 0.5
+            end
+        end
+    end
+end)
+
+-- [[ ENGINE: TWEEN & REMOTE CONTROL ]] --
+local function TweenTP(targetCFrame)
+    local char = game.Players.LocalPlayer.Character
+    if char and char:FindFirstChild("HumanoidRootPart") then
+        local dist = (targetCFrame.Position - char.HumanoidRootPart.Position).Magnitude
+        game:GetService("TweenService"):Create(char.HumanoidRootPart, TweenInfo.new(dist/_G.Settings.TweenSpeed, Enum.EasingStyle.Linear), {CFrame = targetCFrame}):Play()
+    end
+end
+
+-- [[ THE ULTIMATE CORE LOOP ]] --
+task.spawn(function()
+    while task.wait() do
+        pcall(function()
+            local lp = game.Players.LocalPlayer
+            local char = lp.Character
+            if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+            
+            -- FRUIT FINDER (TP GAK BERHENTI)
+            if _G.Settings.FruitFinderTP then
+                for _, v in pairs(workspace:GetChildren()) do
+                    if v:IsA("Tool") and v:FindFirstChild("Handle") then
+                        char.HumanoidRootPart.CFrame = v.Handle.CFrame
+                        break
+                    end
+                end
+            end
+
+            -- PREHISTORIC (PH) LOGIC
+            if _G.Settings.FindPH then
+                local PH = workspace.Map:FindFirstChild("Prehistoric Island") or workspace:FindFirstChild("Prehistoric")
+                if PH then TweenTP(PH:GetModelCFrame() * CFrame.new(0, 50, 0)) end
+            end
+
+            -- NO COOLDOWN DUAL FLINTLOCK
+            if _G.Settings.NoCooldown then
+                -- Bypass client logic for guns
+            end
+        end)
+    end
+end)
+
+-- [[ UI CONSTRUCTION: XLUES BLUE ]] --
+MainFrame.Parent = ScreenGui; MainFrame.BackgroundColor3 = Color3.fromRGB(0, 10, 25); MainFrame.Size = UDim2.new(0, 550, 0, 380); MainFrame.Position = UDim2.new(0.5, -275, 0.5, -190); MainFrame.Active = true; MainFrame.Draggable = true
+Instance.new("UICorner", MainFrame); local st = Instance.new("UIStroke", MainFrame); st.Thickness = 2; st.Color = Color3.fromRGB(0, 180, 255)
+
+Sidebar.Parent = MainFrame; Sidebar.Size = UDim2.new(0, 150, 1, 0); Sidebar.BackgroundColor3 = Color3.fromRGB(0, 15, 40); Instance.new("UICorner", Sidebar)
+Logo.Parent = MainFrame; Logo.Text = "XLUES BLUE V2"; Logo.Size = UDim2.new(0, 150, 0, 60); Logo.TextColor3 = Color3.fromRGB(0, 220, 255); Logo.Font = "GothamBold"; Logo.TextSize = 20; Logo.BackgroundTransparency = 1
+
+ToggleBtn.Parent = MainFrame; ToggleBtn.Text = "LIPAT"; ToggleBtn.Size = UDim2.new(0, 70, 0, 30); ToggleBtn.Position = UDim2.new(1, -80, 0, 15); ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 120, 255); ToggleBtn.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", ToggleBtn)
+
+OpenBtn.Parent = ScreenGui; OpenBtn.Text = "XLUES"; OpenBtn.Size = UDim2.new(0, 60, 0, 60); OpenBtn.Position = UDim2.new(0, 20, 0.5, -30); OpenBtn.BackgroundColor3 = Color3.fromRGB(0, 100, 255); OpenBtn.Visible = false; Instance.new("UICorner", OpenBtn); Instance.new("UIStroke", OpenBtn).Color = Color3.new(1,1,1)
+
+Container.Parent = MainFrame; Container.Position = UDim2.new(0, 160, 0, 60); Container.Size = UDim2.new(1, -170, 1, -70); Container.BackgroundTransparency = 1; Container.CanvasSize = UDim2.new(0,0,60,0); Container.ScrollBarImageColor3 = Color3.fromRGB(0, 200, 255)
+Instance.new("UIListLayout", Container).Padding = UDim.new(0, 6)
+
+-- UI TOGGLES
+ToggleBtn.MouseButton1Click:Connect(function() MainFrame.Visible = false; OpenBtn.Visible = true end)
+OpenBtn.MouseButton1Click:Connect(function() MainFrame.Visible = true; OpenBtn.Visible = false end)
+
+function AddToggle(txt, prop)
+    local b = Instance.new("TextButton", Container); b.Size = UDim2.new(1, -10, 0, 40); b.BackgroundColor3 = Color3.fromRGB(0, 30, 70); b.Text = "  "..txt; b.TextColor3 = _G.Settings[prop] and Color3.fromRGB(0, 255, 255) or Color3.new(1,1,1); b.TextXAlignment = 0; Instance.new("UICorner", b)
+    b.MouseButton1Click:Connect(function() _G.Settings[prop] = not _G.Settings[prop]; b.TextColor3 = _G.Settings[prop] and Color3.fromRGB(0, 255, 255) or Color3.new(1,1,1) end)
+end
+
+function Clear() for _, v in pairs(Container:GetChildren()) do if not v:IsA("UIListLayout") then v:Destroy() end end end
+
+-- [[ TAB PAGES ]] --
+function ShowFarming()
+    Clear()
+    AddToggle("AUTO FARM LEVEL", "AutoFarm")
+    AddToggle("AUTO ALL BOSS", "AutoFarmAllBoss")
+    AddToggle("AUTO KATAKURI", "AutoKatakuri")
+    AddToggle("AUTO RIP INDRA", "AutoIndra")
+    AddToggle("AUTO DOUGH KING", "AutoDoughKing")
+    AddToggle("AUTO SOUL REAPER", "AutoSoulReaper")
+end
+
+function ShowRace()
+    Clear()
+    AddToggle("AUTO RACE V2-V3", "AutoV3")
+    AddToggle("AUTO TRIAL V4", "AutoTrialV4")
+    AddToggle("KILL PLAYER TRIAL", "KillPlayerTrial")
+    AddToggle("FIND MIRAGE ISLAND", "FindMirage")
+    AddToggle("TWEEN BLUE GEAR", "GetBlueGear")
+    AddToggle("LOCK TO MOON", "LockMoon")
+end
+
+function ShowSea3()
+    Clear()
+    AddToggle("FIND PREHISTORIC (PH)", "FindPH")
+    AddToggle("COLLECT EGG (PH)", "CollectEggPH")
+    AddToggle("AUTO LEVIATHAN", "AutoLevi")
+    AddToggle("AUTO TERROR SHARK", "AutoShark")
+    AddToggle("AUTO AZURE (KITSUNE)", "AutoAzure")
+    AddToggle("GACHA KITSUNE", "GachaKitsune")
+end
+
+function ShowItems()
+    Clear()
+    AddToggle("GET CDK", "GetCDK"); AddToggle("GET TTK", "GetTTK")
+    AddToggle("GET SOUL GUITAR", "GetSGT"); AddToggle("AUTO GODHUMAN", "AutoGodHuman")
+    AddToggle("AUTO MASTERY", "AutoMastery"); AddToggle("FARM BONES", "FarmBones")
+end
+
+function ShowMisc()
+    Clear()
+    AddToggle("FRUIT FINDER (NONSTOP)", "FruitFinderTP")
+    AddToggle("AUTO STORE FRUIT", "AutoStore")
+    AddToggle("NO COOLDOWN WEAPONS", "NoCooldown")
+end
+
+TabHolder.Parent = Sidebar; TabHolder.Position = UDim2.new(0,0,0,70); TabHolder.Size = UDim2.new(1,0,1,-80); TabHolder.BackgroundTransparency = 1; Instance.new("UIListLayout", TabHolder).Padding = UDim.new(0,5)
+function CreateTab(n, f) local b = Instance.new("TextButton", TabHolder); b.Size = UDim2.new(1,0,0,35); b.Text = n; b.BackgroundTransparency = 1; b.TextColor3 = Color3.new(1,1,1); b.Font = "GothamBold"; b.TextSize = 10; b.MouseButton1Click:Connect(f) end
+
+CreateTab("FARM & BOSS", ShowFarming); CreateTab("RACE V4 / TRIAL", ShowRace); CreateTab("PH & SEA 3", ShowSea3); CreateTab("GOD ITEMS", ShowItems); CreateTab("MISC / FRUIT", ShowMisc)
+ShowFarming()

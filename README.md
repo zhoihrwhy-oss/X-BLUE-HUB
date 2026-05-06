@@ -1,2 +1,0 @@
-# X-BLUE-HUB
-Script
